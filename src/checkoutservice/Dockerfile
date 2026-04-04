@@ -14,6 +14,6 @@ WORKDIR /
 
 COPY --from=builder /build/app /app
 
-EXPOSE 8080
+EXPOSE 5050
 
 CMD ["/app"]
