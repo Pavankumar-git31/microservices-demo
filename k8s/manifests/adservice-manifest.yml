@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: adservice-deployment
+  namespace: boutique
+  labels:
+    app: adservice  
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adservice  
+  template:
+    metadata:
+      labels:
+        app: adservice
+  spec:
+    containers:
+    - name: adservicecontainer
+      image: pavankumarkothala31/adservice:v1
+      ports:
+        - containerPort: 9555
+      resources:
+        requests:
+          cpu: "100m"
+          memory: "64Mi"
+        limits:
+          cpu: "200m"
+          memory: "128Mi"
+
+      readinessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        grpc:
+          port: 9555
+      livenessProbe:
+        initialDelaySeconds: 10
+        periodSeconds: 10
+        grpc:
+          port: 9555
+      env:
+      - name: PORT
+        value: "9555"
+       
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adservice  
+  namespace: boutique
+spec:
+  type: ClusterIP
+  selector:
+    app: adservice
+  ports:
+  - name: grpc
+    port: 9555
+    targetPort: 9555
