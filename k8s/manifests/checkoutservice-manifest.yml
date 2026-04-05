@@ -14,57 +14,41 @@ spec:
     metadata:
       labels:
         app: checkoutservice 
-  spec:
-    containers:
-    - name: checkoutservicecontainer
-      image: pavankumarkothala31/checkoutservice:v1
-      ports:
+    spec:   
+      containers:
+      - name: checkoutservicecontainer
+        image: pavankumarkothala31/checkoutservice:v1
+        ports:
         - containerPort: 5050
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "64Mi"
-        limits:
-          cpu: "200m"
-          memory: "128Mi"
-
-      readinessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 5050
-      livenessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 5050
-      env:
-      - name: PORT
-        value: "5050"
-      - name: PRODUCT_CATALOG_SERVICE_ADDR
-        value: "productcatalogservice:3550"
-      - name: SHIPPING_SERVICE_ADDR
-        value: "shippingservice:50051"
-      - name: PAYMENT_SERVICE_ADDR
-        value: "paymentservice:50051"
-      - name: EMAIL_SERVICE_ADDR
-        value: "emailservice:5000"
-      - name: CURRENCY_SERVICE_ADDR
-        value: "currencyservice:7000"
-      - name: CART_SERVICE_ADDR
-        value: "cartservice:7070"
-
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: checkoutservice   
-  namespace: boutique
-spec:
-  type: ClusterIP
-  selector:
-    app: checkoutservice  
-  ports:
-  - name: grpc
-    port: 5050
-    targetPort: 5050
+        resources:
+          requests:
+            cpu: "100m"
+            memory: "64Mi"
+          limits:
+            cpu: "200m"
+            memory: "128Mi"
+        readinessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          grpc:
+            port: 5050
+        livenessProbe:
+          initialDelaySeconds: 10
+          periodSeconds: 10
+          grpc:
+            port: 5050
+        env:
+        - name: PORT
+          value: "5050"
+        - name: PRODUCT_CATALOG_SERVICE_ADDR
+          value: "productcatalogservice:3550"
+        - name: SHIPPING_SERVICE_ADDR
+          value: "shippingservice:50051"
+        - name: PAYMENT_SERVICE_ADDR
+          value: "paymentservice:50051"
+        - name: EMAIL_SERVICE_ADDR
+          value: "emailservice:5000"
+        - name: CURRENCY_SERVICE_ADDR
+          value: "currencyservice:7000"
+        - name: CART_SERVICE_ADDR
+          value: "cartservice:7070"
