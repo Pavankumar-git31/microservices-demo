@@ -4,50 +4,47 @@ metadata:
   name: adservice-deployment
   namespace: boutique
   labels:
-    app: adservice  
+    app: adservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: adservice  
+      app: adservice
   template:
     metadata:
       labels:
         app: adservice
-  spec:
-    containers:
-    - name: adservicecontainer
-      image: pavankumarkothala31/adservice:v1
-      ports:
+    spec:                        
+      containers:
+      - name: adservicecontainer
+        image: pavankumarkothala31/adservice:v1
+        ports:
         - containerPort: 9555
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "64Mi"
-        limits:
-          cpu: "200m"
-          memory: "128Mi"
-
-      readinessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 9555
-      livenessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 9555
-      env:
-      - name: PORT
-        value: "9555"
-       
-
+        resources:
+          requests:
+            cpu: "200m"
+            memory: "180Mi"      # ← FIXED: Java needs more memory
+          limits:
+            cpu: "300m"
+            memory: "300Mi"      # ← FIXED: was 128Mi, Java gets OOMKilled
+        readinessProbe:
+          initialDelaySeconds: 20  # ← FIXED: Java takes longer to start
+          periodSeconds: 15
+          grpc:
+            port: 9555
+        livenessProbe:
+          initialDelaySeconds: 20
+          periodSeconds: 15
+          grpc:
+            port: 9555
+        env:
+        - name: PORT
+          value: "9555"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: adservice  
+  name: adservice
   namespace: boutique
 spec:
   type: ClusterIP
