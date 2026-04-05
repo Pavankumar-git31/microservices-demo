@@ -4,58 +4,46 @@ metadata:
   name: currencyservice-deployment
   namespace: boutique
   labels:
-    app: currencyservice   
+    app: currencyservice
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: currencyservice   
+      app: currencyservice
   template:
     metadata:
       labels:
-        app: currencyservice 
-  spec:
-    containers:
-    - name: currencyservicecontainer
-      image: pavankumarkothala31/currencyservice:v1
-      ports:
+        app: currencyservice
+    spec:
+      containers:
+      - name: currencyservicecontainer
+        image: pavankumarkothala31/currencyservice:v1
+        ports:
         - containerPort: 7000
-      resources:
-        requests:
-          cpu: "100m"
-          memory: "64Mi"
-        limits:
-          cpu: "200m"
-          memory: "128Mi"
-
-      readinessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 7000
-      livenessProbe:
-        initialDelaySeconds: 10
-        periodSeconds: 10
-        grpc:
-          port: 7000
-      env:
-      - name: PORT
-        value: "7000"
-      - name: DISABLE_PROFILER
-        value: "1"
-       
-
+        readinessProbe:
+          grpc:
+            port: 7000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        livenessProbe:
+          grpc:
+            port: 7000
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        env:
+        - name: PORT
+          value: "7000"
+        - name: DISABLE_PROFILER
+          value: "1"
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: currencyservice   
+  name: currencyservice
   namespace: boutique
 spec:
-  type: ClusterIP
   selector:
-    app: currencyservice   
+    app: currencyservice
   ports:
-  - name: grpc
-    port: 7000
+  - port: 7000
     targetPort: 7000
