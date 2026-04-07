@@ -1,5 +1,5 @@
 #!/bin/bash
-
+echo "Script for the Building images "
 DOCKER_USER ="pavankumarkothala31"
 DOCKER_VERSION="v1"
 
