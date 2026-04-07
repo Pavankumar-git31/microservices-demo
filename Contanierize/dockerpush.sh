@@ -1,4 +1,5 @@
 #!/bin/bash
+echo "Script for push images to registry"
 
 DOCKER_USER ="pavankumarkothala31"
 DOCKER_VERSION="v1"
