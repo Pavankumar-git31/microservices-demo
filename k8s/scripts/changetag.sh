@@ -18,5 +18,5 @@ services=(
 
 for service in "${services[@]}"
 do
-  sed -i "s|${DOCKER_USER}/${service}:.*|${DOCKER_USER}/${service}:${DOCKER_TAG}|g" k8s/manifests/${service}-manifest.yml
+  sed -i "s|${DOCKER_USER}/${service}:.*|${DOCKER_USER}/${service}:${DOCKER_TAG}|g" ../manifests/${service}-manifest.yml
 done
