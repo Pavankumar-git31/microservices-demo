@@ -1,18 +1,20 @@
-FROM golang:1.22-alpine AS builder
+# Build stage
+FROM golang:1.25-alpine AS builder
+
 WORKDIR /build
 
 COPY go.mod go.sum ./
 RUN go mod download
 
 COPY . .
+RUN go build -o server .
 
-RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o app ./cmd/main.go
-
+# Final stage
 FROM alpine:latest
-WORKDIR /
 
-COPY --from=builder /build/app /app
+WORKDIR /app
+COPY --from=builder /build/server .
 
 EXPOSE 50051
 
-CMD ["/app"]
+ENTRYPOINT ["/app/server"]
