@@ -1,6 +1,5 @@
 #!/bin/bash
 
-set -e
 DOCKER_USER="pavankumarkothala31"
 DOCKER_TAG="v1"
 
